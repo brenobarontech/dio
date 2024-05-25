@@ -18,14 +18,42 @@ export abstract class DioAccount {
     return this.name
   }
 
-  deposit = (): void => {
-    if(this.validateStatus()){
-      console.log('Voce depositou')
+  deposit = (depositado:number,novaconta?:boolean): void => {
+    
+    if(this.validateStatus())
+    {
+
+      if(novaconta)
+      {
+        console.log('valor depositado: R$ ' + depositado.toFixed(2).replace('.',','))
+        console.log('PArabens por abrir na nossa conta')
+        this.balance = depositado + 10 
+
+
+      }else
+      {
+        console.log('Voce depositou: ' + depositado.toFixed(2).replace('.',','))
+        this.balance = this.balance + depositado 
+      }
+
+    
+
     }
+
+    console.log('Saldo atual: ' + this.balance.toFixed(2).replace('.',','))
+   
   }
 
-  withdraw = (): void => {
-    console.log('Voce sacou')
+  withdraw = (sacar:number): void => {
+    if(this.validateStatus() && sacar <= this.balance){
+      this.balance = this.balance - sacar 
+      console.log('Voce sacou: ' + sacar.toFixed(2).replace('.',','))
+      console.log('Saldo atual: ' + this.balance.toFixed(2).replace('.',','))
+    
+    }else{
+      console.log(sacar.toFixed(2).replace('.',',') + '  é maior que o saldo atual ' + this.balance.toFixed(2).replace('.',','))
+    }
+   
   }
 
   getBalance = (): void => {
@@ -38,5 +66,10 @@ export abstract class DioAccount {
     }
 
     throw new Error('Conta inválida')
+  }
+
+  getValidaStatus = () : boolean =>{
+    return this.validateStatus()
+    
   }
 }
